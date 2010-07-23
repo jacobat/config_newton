@@ -1,6 +1,70 @@
-= config_newton
+= ConfigNewton
 
-Description goes here.
+A common pattern for Ruby libraries is to have some kind of configuration that can be set at the library level. ConfigNewton is a simple library that provides a user-friendly way to expose that configuration.
+
+== Installation
+
+    gem install config_newton
+    
+== Usage
+
+    require 'config_newton'
+    
+    # The library author sets it up like this:
+    
+    module MyLibrary
+      include ConfigNewton
+      
+      configurable do
+        property :email
+        property :special_sauce, :default => true
+      end
+    end
+    
+    # And the end user can set it like this:
+    
+    MyLibrary.configure do |config|
+      config.email = 'dude@somewhere.com'
+      config.special_sauce = false
+    end
+    
+    # And the library author can use it like this:
+    
+    module MyLibrary
+      class Client
+        # ... somewhere in the code ...
+        MyLibrary.config.email # => 'dude@somewhere.com'
+      end
+    end
+    
+== Other Useful Bits
+
+There are a few other useful features of ConfigNewton. For instance, you can convert the configuration to a hash at any time, or just access it like one:
+
+    MyLibrary.config.to_hash # => {:email => 'dude@somewhere.com', :special_sauce => false}
+    MyLibrary[:special_sauce] # => false
+    
+You can also load user settings from a YAML file quite easily. Let's say you're developing a Rails plugin. You can easily load a <tt>config</tt> directory YAML file like this:
+    
+    MyLibrary.config.load_from("#{Rails.root}/config/my_library.yml", Rails.env)
+    
+The second argument specified is the "root key" for the configuration, allowing you to easily specify environments or other conditions. Using our examples above the user would create a YAML file in <tt>config/my_library.yml</tt> and populate it like this:
+
+    development:
+      email: just@testing.com
+      special_sauce: false
+    
+    production
+      email: bob@example.com
+      special_sauce: true
+      
+== Roadmap
+
+There's still further I'd like to take this library, here are a few thoughts:
+
+Hierarchical Configuration :: Create multi-level configurations that retain an intuitive interface both for the library developer and the user.
+Typed Configurations :: Implement a simple casting system to automatically convert values into desired types.
+
 
 == Note on Patches/Pull Requests
  
