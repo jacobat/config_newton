@@ -125,7 +125,7 @@ module ConfigNewton
     # the entire yaml document to be utilized. For
     # example, in Rails, you might provide the 
     # Rails environment as a root node.
-    def load_from(file_or_path, root_node = 'configuration')
+    def load_from(file_or_path, root_node = nil)
       hash = YAML::load_file(file_or_path)
       set(root_node ? hash[root_node] : hash)
     end

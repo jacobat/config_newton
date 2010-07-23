@@ -97,4 +97,24 @@ describe ConfigNewton::Configuration do
       subject.load(yaml, 'production').email.should == 'frank@example.com'
     end
   end
+
+  describe '#load_from' do
+    use_fakefs(self)
+    describe 'without a root node' do
+      before do
+        config_file = FakeFS::FakeFile.new("config.yml")
+        config_file.content = { :email => "bob@example.com" }.to_yaml
+        FakeFS::FileSystem.add("config.yml", config_file)
+      end
+
+      before do
+        subject.add(:email)
+      end
+
+      it 'should be able to load from YAML' do
+        subject.load_from('config.yml').email.should == 'bob@example.com'
+      end
+    end
+  end
+
 end

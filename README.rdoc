@@ -57,6 +57,11 @@ The second argument specified is the "root key" for the configuration, allowing 
     production
       email: bob@example.com
       special_sauce: true
+
+The second argument may be omitted in which case the file should look like:
+
+    email: bob@example.com
+    special_sauce: true
       
 == Roadmap
 
