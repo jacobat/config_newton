@@ -54,7 +54,7 @@ The second argument specified is the "root key" for the configuration, allowing 
       email: just@testing.com
       special_sauce: false
     
-    production
+    production:
       email: bob@example.com
       special_sauce: true
 
